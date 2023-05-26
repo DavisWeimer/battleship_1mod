@@ -12,6 +12,13 @@ RSpec.describe Ship do
   it 'has health initially equal to length and decreases upon each hit' do
     cruiser = Ship.new("Cruiser", 3)
     expect(cruiser.health).to eq(3)
+    expect(cruiser.sunk?).to eq(false)
+    cruiser.hit
+    expect(cruiser.health).to eq(2)
+    cruiser.hit
+    expect(cruiser.health).to eq(1)
+    cruiser.hit
+    expect(cruiser.sunk?).to eq(true)
   end
 
   
