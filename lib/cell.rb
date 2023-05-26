@@ -6,4 +6,11 @@ class Cell
     @ship = ship
   end
 
+  def empty?
+    !@ship
+  end
+
+  def place_ship(cruiser)
+    @ship = cruiser
+  end
 end
