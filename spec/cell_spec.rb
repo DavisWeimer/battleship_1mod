@@ -24,4 +24,16 @@ RSpec.describe Cell do
     expect(cell.empty?).to eq false
   end
 
+  it 'knows when its fired upon' do
+    cell = Cell.new("B4")
+    cruiser = Ship.new("Cruiser", 3)
+    cell.place_ship(cruiser)
+    expect(cell.fired_upon?).to eq false
+    require 'pry'; binding.pry
+
+    cell.fire_upon
+    expect(cell.ship.health).to eq(2)
+    expect(cell.fired_upon?).to eq true
+  end
+
 end
