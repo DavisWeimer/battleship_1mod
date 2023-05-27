@@ -4,29 +4,33 @@ class Cell
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = ship
+    @cell_fired_upon = false
   end
 
   def empty?
     !@ship
   end
 
-  def place_ship(cruiser)
-    @ship = cruiser
+  def place_ship(new_ship)
+    @ship = new_ship
   end
 
   def fired_upon?
-    @ship.health != @ship.length
+    @cell_fired_upon
   end
 
   def fire_upon
-    @ship.hit
+    if empty?
+      @cell_fired_upon = true
+    else
+      @ship.hit
+    end
+    @cell_fired_upon = true
   end
 
   def render
-    if 
+    if !fired_upon?
       "."
-    elsif fired_upon? && empty?
-      "M"
     end
   end
 end
