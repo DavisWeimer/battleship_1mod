@@ -3,7 +3,7 @@ class Cell
 
   def initialize(coordinate)
     @coordinate = coordinate
-    @ship = ship
+    @ship = nil 
     @cell_fired_upon = false
   end
 
@@ -20,12 +20,10 @@ class Cell
   end
 
   def fire_upon
-    if empty?
-      @cell_fired_upon = true
-    else
+    @cell_fired_upon = true
+    if @ship 
       @ship.hit
     end
-    @cell_fired_upon = true
   end
 
   def render
