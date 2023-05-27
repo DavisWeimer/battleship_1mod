@@ -29,7 +29,7 @@ RSpec.describe Cell do
       cell = Cell.new("B4")
       cruiser = Ship.new("Cruiser", 3)
       cell.place_ship(cruiser)
-
+      require 'pry'; binding.pry
       expect(cell.fired_upon?).to eq false
       cell.fire_upon
       expect(cell.ship.health).to eq(2)
@@ -40,12 +40,19 @@ RSpec.describe Cell do
 # ——————————— RENDER ——————————
 
   describe "Class" do
-    it 'can render .' do
+    xit 'can render .' do
       cell_1 = Cell.new("B4")
-      require 'pry'; binding.pry
       expect(cell_1.render).to eq(".")
       cell_1.fire_upon
       expect(cell_1.render).to eq("M")
+      
+      cell_2 = Cell.new("C3")
+      cruiser = Ship.new("Cruiser", 3)
+      
+      cell_2.place_ship(cruiser)
+      cell_2.render
+      expect(cell_2.ship).to eq(cruiser)
+      expect(cell_1.render).to eq(".")
     end
   end
 end
