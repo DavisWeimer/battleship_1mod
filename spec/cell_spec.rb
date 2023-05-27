@@ -18,7 +18,7 @@ RSpec.describe Cell do
     it 'can store a ship object' do
       cell = Cell.new("B4")
       expect(cell.empty?).to eq true
-
+     
       cruiser = Ship.new("Cruiser", 3)
       cell.place_ship(cruiser)
       expect(cell.ship).to eq(cruiser)
@@ -29,7 +29,6 @@ RSpec.describe Cell do
       cell = Cell.new("B4")
       cruiser = Ship.new("Cruiser", 3)
       cell.place_ship(cruiser)
-      require 'pry'; binding.pry
       expect(cell.fired_upon?).to eq false
       cell.fire_upon
       expect(cell.ship.health).to eq(2)
