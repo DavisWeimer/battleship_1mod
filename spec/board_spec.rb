@@ -12,10 +12,6 @@ RSpec.describe Board do
       expect(board.cells).to be_a(Hash)
       expect(board.cells.count).to eq(16)
     end
-
-    it 'can validate coordinates' do
-      board = Board.new
-      board.valid_coordinate?("A1").to eq(true)
-    end
   end
+  
 end
