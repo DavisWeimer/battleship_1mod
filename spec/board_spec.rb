@@ -22,4 +22,5 @@ RSpec.describe Board do
       expect(board.valid_coordinate?("A22")).to eq(false)
     end
   end
+  
 end
