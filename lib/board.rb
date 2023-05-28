@@ -1,11 +1,6 @@
 require './lib/cell'
 
 class Board
-  attr_reader :board_cells
-
-  def initialize
-    @board_cells = cells
-  end
 
   def cells
     board = {
@@ -29,6 +24,6 @@ class Board
   end 
 
   def valid_coordinate?(cell_coordinate)
-    @board_cells.keys.include?(cell_coordinate)
+    cells.keys.include?(cell_coordinate)
   end
 end
