@@ -26,4 +26,9 @@ class Board
   def valid_coordinate?(cell_coordinate)
     cells.keys.include?(cell_coordinate)
   end
+
+  def valid_placement?(type, coord_array)
+    if coord_array.count == type.length 
+    end
+  end
 end
