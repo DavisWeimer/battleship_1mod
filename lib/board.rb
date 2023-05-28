@@ -1,6 +1,12 @@
 require './lib/cell'
 
 class Board
+  attr_reader :board_cells
+
+  def initialize
+    @board_cells = cells
+  end
+
   def cells
     board = {
       "A1" => Cell.new("A1"),
@@ -21,4 +27,8 @@ class Board
       "D4" => Cell.new("D4")
     }
   end 
+
+  def valid_coordinate?(cell_coordinate)
+    @board_cells.keys.include?(cell_coordinate)
+  end
 end
