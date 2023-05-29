@@ -25,8 +25,6 @@ class Board
 
   def valid_coordinate?(coordinate)
     cells.has_key?(coordinate) && !cells[coordinate].cell_fired_upon 
-    # add test case for when cell fired upon is true
-    # if cell has been fired upon?
   end
 
   def valid_placement?(ship, coord_array)
@@ -37,11 +35,11 @@ class Board
     numbers = []
     coord_array.each do |coord|
       letters << coord[0] 
-      numbers << coord[1].to_i
+      numbers << coord[1]
     end
 
-    consecutive?(letters) && same?(numbers) || consecutive?(numbers) && same?(letters)
-   
+    consecutive?(letters) && same?(numbers) || consecutive?(numbers) && same?(letters) 
+
   end
 
   def consecutive?(letters_or_numbers)
