@@ -71,7 +71,6 @@ class Board
   end
 
   def place(ship_obj, coord_array)
-    return false if occupied(coord_array)
     updated_board = Hash.new
     coord_array.each do |coord|
       updated_board[coord] = Cell.new(coord)
