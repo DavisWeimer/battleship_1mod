@@ -1,9 +1,10 @@
 require './lib/cell'
 
 class Board
+  attr_reader :current_board
 
-  def cells
-    board = {
+  def initialize
+    @current_board = {
       "A1" => Cell.new("A1"),
       "A2" => Cell.new("A2"),
       "A3" => Cell.new("A3"),
@@ -21,6 +22,9 @@ class Board
       "D3" => Cell.new("D3"),
       "D4" => Cell.new("D4")
     }
+  end
+  def cells
+    @current_board 
   end 
 
   def valid_coordinate?(coordinate)
@@ -64,6 +68,15 @@ class Board
     coord_array.any? do |coord|
       !cells[coord].empty?
     end
+  end
+
+  def place(ship_obj, coord_array)
+    updated_board = Hash.new
+    coord_array.each do |coord|
+      updated_board[coord] = Cell.new(coord)
+      updated_board[coord].place_ship(ship_obj)
+    end
+    @current_board.merge!(updated_board)
   end
 end
 
