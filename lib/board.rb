@@ -23,12 +23,50 @@ class Board
     }
   end 
 
-  def valid_coordinate?(cell_coordinate)
-    cells.keys.include?(cell_coordinate)
+  def valid_coordinate?(coordinate)
+    cells.has_key?(coordinate) && !cells[coordinate].cell_fired_upon 
+    # add test case for when cell fired upon is true
+    # if cell has been fired upon?
   end
 
-  def valid_placement?(type, coord_array)
-    if coord_array.count == type.length 
+  def valid_placement?(ship, coord_array)
+    return false if ship.length != coord_array.count
+    return false if occupied(coord_array) == true
+
+    letters = []
+    numbers = []
+    coord_array.each do |coord|
+      letters << coord[0] 
+      numbers << coord[1].to_i
+    end
+
+    consecutive?(letters) && same?(numbers) || consecutive?(numbers) && same?(letters)
+   
+  end
+
+  def consecutive?(letters_or_numbers)
+    consecutive = false
+    check_consecutive = letters_or_numbers.first.ord
+    letters_or_numbers.each do |letter|
+      if letter.ord == check_consecutive
+        consecutive = true
+      else
+        consecutive = false
+      end
+      check_consecutive += 1
+    end
+    consecutive
+  end
+
+  def same?(letters_or_numbers)
+    letters_or_numbers.uniq.count == 1
+  end
+  
+  def occupied(coord_array)
+    coord_array.any? do |coord|
+      !cells[coord].empty?
     end
   end
 end
+
+
