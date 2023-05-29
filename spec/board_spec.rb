@@ -17,11 +17,17 @@ RSpec.describe Board do
   describe 'coordinates' do
     it 'can validate passed in coordinate' do
       board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
       expect(board.valid_coordinate?("A1")).to eq true
       expect(board.valid_coordinate?("D4")).to eq true
       expect(board.valid_coordinate?("A5")).to eq false
       expect(board.valid_coordinate?("E1")).to eq false
       expect(board.valid_coordinate?("A22")).to eq false
+      board.cells["A1"].fire_upon
+      board.cells["D4"].fire_upon
+      # .fire_upon method returning false! WHY!?
+      expect(board.valid_coordinate?("A1")).to eq true
+      expect(board.valid_coordinate?("D4")).to eq true
     end
 
     it 'can validate ship placement only equal to length' do
@@ -34,7 +40,7 @@ RSpec.describe Board do
       expect(board.valid_placement?(submarine, ["C2", "C3"])).to eq true
     end
 
-    it 'can validate ship placement if coordinates are consecutive' do
+    it 'can validate ship placement if coordinates are consecutive vertically and horizontally' do
       board = Board.new
       cruiser = Ship.new("Cruiser", 3)
       submarine = Ship.new("Submarine", 2)
@@ -42,6 +48,16 @@ RSpec.describe Board do
       expect(board.valid_placement?(submarine, ["A1", "C1"])).to eq false
       expect(board.valid_placement?(cruiser, ["A3", "A2", "A1"])).to eq false
       expect(board.valid_placement?(submarine, ["C1", "B1"])).to eq false
+      expect(board.valid_placement?(cruiser, ["B1", "C1", "D1"])).to eq true
+      expect(board.valid_placement?(submarine, ["A1", "A2"])).to eq true
+    end
+
+    it 'cannot validate diagonal placement' do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      expect(board.valid_placement?(cruiser, ["A1", "B2", "C3"])).to eq false
+      expect(board.valid_placement?(submarine, ["C2", "D3"])).to eq false
     end
   end
 end
