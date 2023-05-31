@@ -35,6 +35,8 @@ include Methodable
     @npc_cruiser = Ship.new("Cruiser", 3)
     @npc_submarine = Ship.new("Submarine", 2)
     @npc_random_coords = @npc_board.cells.keys.shuffle!
+    @npc_index = 0
+
     @npc_board.place(@npc_cruiser, coord_randomizer(@npc_cruiser)) 
     @npc_board.place(@npc_submarine, coord_randomizer(@npc_submarine)) 
   end
@@ -82,7 +84,7 @@ include Methodable
   def display_boards
     puts "\n"
     puts "=============COMPUTER BOARD============="
-    puts @npc_board.render(true)
+    puts @npc_board.render
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
   end
@@ -101,8 +103,10 @@ include Methodable
         end
       end
       @npc_board.cells[user_input].fire_upon
-      @player_board.cells[@npc_random_coords.uniq].fire_upon
+      @player_board.cells[array_mover].fire_upon
       display_boards
+      npc_result(user_input)
+      player_result(array_mover)
     end
   end
 
