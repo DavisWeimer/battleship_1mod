@@ -26,4 +26,14 @@ module Methodable
   def coord_randomizer(ship)
     valid_horiz_coords(ship).concat(valid_vert_coords(ship)).sample
   end
+
+  def sunk_check?(board)
+    board.cells.all? do |cell|
+      if cell.last.ship != nil
+        cell.last.ship.sunk?
+      else 
+        false
+      end
+    end
+  end
 end
