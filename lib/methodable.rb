@@ -36,4 +36,34 @@ module Methodable
       end
     end
   end
+
+  def array_mover
+    element = @npc_random_coords[@npc_index]
+    @npc_index += 1
+    element
+  end
+
+  def npc_result(coordinate)
+    if @npc_board.cells[coordinate].render == "M"
+      puts "Your shot on #{coordinate} was a miss."
+    elsif @npc_board.cells[coordinate].render == "H"
+      puts "Your shot on #{coordinate} was a hit!"
+    elsif @npc_cruiser.sunk?
+      puts "Your shot on #{coordinate} sunk my Cruiser!"
+    else @npc_submarine.sunk?
+      puts "Your shot on #{coordinate} sunk my Submarine!"
+    end
+  end
+
+  def player_result(coordinate)
+    if @player_board.cells[coordinate].render == "M"
+      puts "My shot on #{coordinate} was a miss."
+    elsif @player_board.cells[coordinate].render == "H"
+      puts "My shot on #{coordinate} was a hit!"
+    elsif @player_cruiser.sunk?
+      puts "My shot on #{coordinate} sunk your Cruiser!"
+    else @player_submarine.sunk?
+      puts "My shot on #{coordinate} sunk your Submarine!"
+    end
+  end
 end
