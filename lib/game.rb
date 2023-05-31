@@ -34,6 +34,7 @@ include Methodable
     @npc_board = Board.new
     @npc_cruiser = Ship.new("Cruiser", 3)
     @npc_submarine = Ship.new("Submarine", 2)
+    @npc_random_coords = @npc_board.cells.keys.shuffle!
     @npc_board.place(@npc_cruiser, coord_randomizer(@npc_cruiser)) 
     @npc_board.place(@npc_submarine, coord_randomizer(@npc_submarine)) 
   end
@@ -74,17 +75,35 @@ include Methodable
     end
 
     @player_board.place(@player_submarine, [user_input].flatten)
-    require 'pry'; binding.pry
     display_boards
     player_shot
   end
 
   def display_boards
-    require 'pry'; binding.pry
+    puts "\n"
+    puts "=============COMPUTER BOARD============="
+    puts @npc_board.render(true)
+    puts "==============PLAYER BOARD=============="
+    puts @player_board.render(true)
   end
 
   def player_shot
-    require 'pry'; binding.pry
+    puts "\n"
+    until sunk_check?(@npc_board) || sunk_check?(@player_board)
+      user_input = ""
+      until @npc_board.valid_coordinate?(user_input) do
+        puts "Enter the coordinate for your shot:"
+        print "> "
+        user_input = gets.chomp.upcase
+        if @npc_board.valid_coordinate?(user_input) == false
+          puts "Please enter a valid coordinate:"
+          print "> "
+        end
+      end
+      @npc_board.cells[user_input].fire_upon
+      @player_board.cells[@npc_random_coords.uniq].fire_upon
+      display_boards
+    end
   end
 
   
