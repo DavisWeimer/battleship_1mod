@@ -18,7 +18,7 @@ include Methodable
         game_time
       elsif user_input == "q"
         puts "Quitting :("
-        exit # run the quit game method
+        exit
       else
         puts "Wrong input, try again"
       end
@@ -36,9 +36,9 @@ include Methodable
     @npc_submarine = Ship.new("Submarine", 2)
     @npc_random_coords = @npc_board.cells.keys.shuffle!
     @npc_index = 0
-
     @npc_board.place(@npc_cruiser, coord_randomizer(@npc_cruiser)) 
     @npc_board.place(@npc_submarine, coord_randomizer(@npc_submarine)) 
+    sunk_check?(@npc_board)
   end
 
   def player_setup
@@ -50,13 +50,13 @@ include Methodable
     puts "The Cruiser is three units long and the Submarine is two units long."
     puts @player_board.render
 
-    user_input = ""
+    user_input = "".split
 
-    until @player_board.valid_placement?(@player_cruiser, [user_input].flatten) do
+    until coord_check?(user_input) && @player_board.valid_placement?(@player_cruiser, user_input) do
       puts "Enter the squares for the Cruiser (3 spaces):"
       print "> "
       user_input = gets.chomp.upcase.split
-      if @player_board.valid_placement?(@player_cruiser, [user_input].flatten) == false
+      if !coord_check?(user_input) || @player_board.valid_placement?(@player_cruiser, user_input) == false
         puts "Those are invalid coordinates. Please try again:"
         print "> "
         user_input = gets.chomp.upcase.split
@@ -64,11 +64,11 @@ include Methodable
     end
     @player_board.place(@player_cruiser, [user_input].flatten)
 
-    until @player_board.valid_placement?(@player_submarine, [user_input].flatten) do
+    until coord_check?(user_input) && @player_board.valid_placement?(@player_submarine, user_input) do
       puts "Enter the squares for the Submarine (2 spaces):"
       print "> "
       user_input = gets.chomp.upcase.split
-      if @player_board.valid_placement?(@player_submarine, [user_input].flatten) == false
+      if !coord_check?(user_input) || @player_board.valid_placement?(@player_submarine, user_input) == false
         puts "Those are invalid coordinates. Please try again:"
         print "> "
         user_input = gets.chomp.upcase.split
@@ -90,7 +90,7 @@ include Methodable
 
   def player_shot
     puts "\n"
-    until (@npc_cruiser.sunk? && @npc_submarine.sunk?) || (@player_cruiser.sunk? && @player_submarine.sunk?) do
+    until sunk_check?(@player_board) || sunk_check?(@npc_board) do
       user_input = ""
       npc_input = array_mover
       puts "Enter the coordinate for your shot:"
@@ -108,5 +108,32 @@ include Methodable
       player_result(npc_input)
     end
   end_game
+  end
+
+  def end_game
+    user_input = ""
+    if sunk_check?(@player_board) && sunk_check?(@npc_board)
+      puts "What are the odds, we tied human.."
+    elsif sunk_check?(@player_board)
+      puts "You won!"
+    else sunk_check?(@npc_board)
+      puts "I won!"
+    end
+    until user_input == "y" do
+      puts "Would you like to play again? Press y/n"
+      print "> "
+      user_input = gets.chomp.downcase
+      if user_input == "y"
+        puts "\n"
+        puts "Starting the game..."
+        puts "\n"
+        game_time
+      elsif user_input == "n"
+        puts "Goodbye..."
+        exit 
+      else
+        puts "Wrong input, try again"
+      end
+    end
   end
 end
