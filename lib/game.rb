@@ -6,7 +6,7 @@ require './lib/methodable'
 class Game
 include Methodable
   def main_menu
-    puts "Welcome to BATTLESHIP"
+    welcome_title
     user_input = ""
     until user_input == "p" do
       puts "Enter p to play. Enter q to quit."
@@ -114,9 +114,9 @@ include Methodable
     user_input = ""
     if sunk_check?(@player_board) && sunk_check?(@npc_board)
       puts "What are the odds, we tied human.."
-    elsif sunk_check?(@player_board)
+    elsif sunk_check?(@npc_board)
       puts "You won!"
-    else sunk_check?(@npc_board)
+    else sunk_check?(@player_board)
       puts "I won!"
     end
     until user_input == "y" do
