@@ -18,7 +18,7 @@ include Methodable
         game_time
       elsif user_input == "q"
         puts "Quitting :("
-        exit # run the quit game method
+        exit
       else
         puts "Wrong input, try again"
       end
@@ -36,9 +36,9 @@ include Methodable
     @npc_submarine = Ship.new("Submarine", 2)
     @npc_random_coords = @npc_board.cells.keys.shuffle!
     @npc_index = 0
-
     @npc_board.place(@npc_cruiser, coord_randomizer(@npc_cruiser)) 
     @npc_board.place(@npc_submarine, coord_randomizer(@npc_submarine)) 
+    sunk_check?(@npc_board)
   end
 
   def player_setup
@@ -85,12 +85,12 @@ include Methodable
     puts "=============COMPUTER BOARD============="
     puts @npc_board.render
     puts "==============PLAYER BOARD=============="
-    puts @player_board.render(true)
+    puts @player_board.render
   end
 
   def player_shot
     puts "\n"
-    until (@npc_cruiser.sunk? && @npc_submarine.sunk?) || (@player_cruiser.sunk? && @player_submarine.sunk?) do
+    until sunk_check?(@player_board) || sunk_check?(@npc_board) do
       user_input = ""
       npc_input = array_mover
       puts "Enter the coordinate for your shot:"
@@ -108,5 +108,32 @@ include Methodable
       player_result(npc_input)
     end
   end_game
+  end
+
+  def end_game
+    user_input = ""
+    if sunk_check?(@player_board) && sunk_check?(@npc_board)
+      puts "What are the odds, we tied human.."
+    elsif sunk_check?(@player_board)
+      puts "You won!"
+    else sunk_check?(@npc_board)
+      puts "I won!"
+    end
+    until user_input == "y" do
+      puts "Would you like to play again? Press y/n"
+      print "> "
+      user_input = gets.chomp.downcase
+      if user_input == "y"
+        puts "\n"
+        puts "Starting the game..."
+        puts "\n"
+        game_time
+      elsif user_input == "n"
+        puts "Goodbye..."
+        exit 
+      else
+        puts "Wrong input, try again"
+      end
+    end
   end
 end
