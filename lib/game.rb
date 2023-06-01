@@ -62,7 +62,6 @@ include Methodable
         user_input = gets.chomp.upcase.split
       end
     end
-
     @player_board.place(@player_cruiser, [user_input].flatten)
 
     until @player_board.valid_placement?(@player_submarine, [user_input].flatten) do
@@ -91,24 +90,23 @@ include Methodable
 
   def player_shot
     puts "\n"
-    until sunk_check?(@npc_board) || sunk_check?(@player_board)
+    until (@npc_cruiser.sunk? && @npc_submarine.sunk?) || (@player_cruiser.sunk? && @player_submarine.sunk?) do
       user_input = ""
-      until @npc_board.valid_coordinate?(user_input) do
-        puts "Enter the coordinate for your shot:"
+      npc_input = array_mover
+      puts "Enter the coordinate for your shot:"
+      print "> "
+      user_input = gets.chomp.upcase
+      if @npc_board.valid_coordinate?(user_input) == false
+        puts "Please enter a valid coordinate:"
         print "> "
         user_input = gets.chomp.upcase
-        if @npc_board.valid_coordinate?(user_input) == false
-          puts "Please enter a valid coordinate:"
-          print "> "
-        end
       end
       @npc_board.cells[user_input].fire_upon
-      @player_board.cells[array_mover].fire_upon
+      @player_board.cells[npc_input].fire_upon 
       display_boards
       npc_result(user_input)
-      player_result(array_mover)
+      player_result(npc_input)
     end
+  end_game
   end
-
-  
 end
