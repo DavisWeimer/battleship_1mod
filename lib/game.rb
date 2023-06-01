@@ -64,11 +64,11 @@ include Methodable
     end
     @player_board.place(@player_cruiser, [user_input].flatten)
 
-    until @player_board.valid_placement?(@player_submarine, [user_input].flatten) do
+    until coord_check?(user_input) && @player_board.valid_placement?(@player_submarine, user_input) do
       puts "Enter the squares for the Submarine (2 spaces):"
       print "> "
       user_input = gets.chomp.upcase.split
-      if @player_board.valid_placement?(@player_submarine, [user_input].flatten) == false && !coord_check?(user_input)
+      if !coord_check?(user_input) || @player_board.valid_placement?(@player_submarine, user_input) == false
         puts "Those are invalid coordinates. Please try again:"
         print "> "
         user_input = gets.chomp.upcase.split
@@ -85,7 +85,7 @@ include Methodable
     puts "=============COMPUTER BOARD============="
     puts @npc_board.render
     puts "==============PLAYER BOARD=============="
-    puts @player_board.render
+    puts @player_board.render(true)
   end
 
   def player_shot
