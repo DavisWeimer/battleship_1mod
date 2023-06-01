@@ -28,12 +28,14 @@ module Methodable
   end
 
   def sunk_check?(board)
-    board.cells.all? do |cell|
-      if cell.last.ship != nil
-        cell.last.ship.sunk?
-      else 
-        false
+    ship_cells = Array.new
+    board.cells.values.each do |cell|
+      if cell.ship != nil
+      ship_cells << cell.ship
       end
+    end
+    ship_cells.all? do |ship|
+        ship.sunk?
     end
   end
 
@@ -67,28 +69,4 @@ module Methodable
     end
   end
 
-  def end_game
-    user_input = ""
-    if @npc_cruiser.sunk? && @npc_submarine.sunk?
-      puts "You won!"
-    else @player_cruiser.sunk? && @player_submarine.sunk?
-      puts "I won!"
-    end
-    until user_input == "y" do
-      puts "Would you like to play again? Press y/n"
-      print "> "
-      user_input = gets.chomp.downcase
-      if user_input == "y"
-        puts "\n"
-        puts "Starting the game..."
-        puts "\n"
-        game_time
-      elsif user_input == "n"
-        puts "Goodbye..."
-        exit 
-      else
-        puts "Wrong input, try again"
-      end
-    end
-  end
 end
