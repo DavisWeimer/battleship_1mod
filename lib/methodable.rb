@@ -66,4 +66,29 @@ module Methodable
       puts "My shot on #{coordinate} sunk your Submarine!"
     end
   end
+
+  def end_game
+    user_input = ""
+    if @npc_cruiser.sunk? && @npc_submarine.sunk?
+      puts "You won!"
+    else @player_cruiser.sunk? && @player_submarine.sunk?
+      puts "I won!"
+    end
+    until user_input == "y" do
+      puts "Would you like to play again? Press y/n"
+      print "> "
+      user_input = gets.chomp.downcase
+      if user_input == "y"
+        puts "\n"
+        puts "Starting the game..."
+        puts "\n"
+        game_time
+      elsif user_input == "n"
+        puts "Goodbye..."
+        exit 
+      else
+        puts "Wrong input, try again"
+      end
+    end
+  end
 end
