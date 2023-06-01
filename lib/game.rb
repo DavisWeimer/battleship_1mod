@@ -50,13 +50,13 @@ include Methodable
     puts "The Cruiser is three units long and the Submarine is two units long."
     puts @player_board.render
 
-    user_input = ""
+    user_input = "".split
 
-    until @player_board.valid_placement?(@player_cruiser, [user_input].flatten) do
+    until coord_check?(user_input) && @player_board.valid_placement?(@player_cruiser, user_input) do
       puts "Enter the squares for the Cruiser (3 spaces):"
       print "> "
       user_input = gets.chomp.upcase.split
-      if @player_board.valid_placement?(@player_cruiser, [user_input].flatten) == false
+      if !coord_check?(user_input) || @player_board.valid_placement?(@player_cruiser, user_input) == false
         puts "Those are invalid coordinates. Please try again:"
         print "> "
         user_input = gets.chomp.upcase.split
@@ -68,7 +68,7 @@ include Methodable
       puts "Enter the squares for the Submarine (2 spaces):"
       print "> "
       user_input = gets.chomp.upcase.split
-      if @player_board.valid_placement?(@player_submarine, [user_input].flatten) == false
+      if @player_board.valid_placement?(@player_submarine, [user_input].flatten) == false && !coord_check?(user_input)
         puts "Those are invalid coordinates. Please try again:"
         print "> "
         user_input = gets.chomp.upcase.split
