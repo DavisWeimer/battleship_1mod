@@ -38,6 +38,12 @@ module Methodable
         ship.sunk?
     end
   end
+  
+  def coord_check?(user_input)
+    user_input.all? do |coord|
+      @player_board.valid_coordinate?(coord)
+    end
+  end
 
   def array_mover
     element = @npc_random_coords[@npc_index]
